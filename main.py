@@ -1,5 +1,5 @@
 def main():
-    print("Hello from alma-genai-project-ai-advocate!")
+    print("Hello from almapractise-genaiadvocate!")
 
 
 if __name__ == "__main__":

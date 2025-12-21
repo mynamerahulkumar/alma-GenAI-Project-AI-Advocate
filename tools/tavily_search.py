@@ -122,4 +122,75 @@ class TavilySearchTool:
             "formatted": self._format_results(raw_results),
             "source": "tavily_web_search"
         }
+        
 
+class HybridSearchManager:
+    """
+        Manages the hybrid search:combines document search with web search
+        Strategy:
+        1.First ,search in local document 
+        2.If results are insufficient ,augument with the web search
+    """
+    def __init__(self,
+                 vector_store_manager,tavily_tool:TavilySearchTool=None):
+        """Initialize hybrid search manger
+        Args:
+            vector_store_document:It is for document search
+            tavily_tool:TavilySearchToool for web search
+        
+        """
+        self.vector_store=vector_store_manager
+        self.tavily=tavily_tool or TavilySearchTool()
+        
+    
+    def search(self,query:str,use_web_search:bool=False,
+               doc_k:int=3)->dict:
+        """
+         Perform hybrid search
+         Args:
+         query:search query:
+         use_web_search:enable google search
+         doc_k=number of document to retrieve
+        """
+        
+        results={
+            "query":query,
+            "document_result":[],
+            "web_results":None
+        }
+        if self.vector_store.is_initialized:
+            docs=self.vector_store.search(query,k=doc_k)
+            results["document_result"]=docs
+        if use_web_search:
+            web_results=self.tavily.search(query)
+            results["web_results"]=web_results
+        return results
+
+    def format_hybrid_context(self,doc_result:List,
+                              web_results:Optional[str]=None)->str:
+        """
+        Format hybrid search results into context string 
+        Args:
+        doc_results:Document search results
+        web_results:Web search results
+        Returns 
+            Formatted context string
+        """
+        context_parts=[]
+        if doc_result:
+            context_parts.append("===From Your document===")
+            for i,doc in enumerate(doc_result,1):
+                source=doc.metadata.get("source","unknown")
+                context_parts.append(f"[Doc{i}]({source}):\n{doc.page_content}")
+        if web_results:
+            context_parts.append("===From web search===")
+            context_parts.append(web_results)
+        
+        return "\n\n".join(context_parts) if context_parts else "No Context available"
+        
+        
+            
+        
+    
+        
+        

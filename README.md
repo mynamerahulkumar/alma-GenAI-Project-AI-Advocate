@@ -1,372 +1,129 @@
+# RAG Chatbot Workshop - 4 Day Course
 
-# Alma GenAI Project - AI Advocate
+A full-stack RAG (Retrieval-Augmented Generation) chatbot built with LangChain, Streamlit, FAISS, and Tavily search.
 
-A comprehensive RAG (Retrieval-Augmented Generation) system demonstrating document processing, embeddings, vector stores, and AI-powered question answering.
+## 🎯 Course Overview
 
-**Pipeline Flow**: Document Process → Embeddings → Vector Store → RAG Chain
+This project is designed for a **4-day workshop** (2 hours per day) teaching RAG application development.
 
----
+### Day-by-Day Breakdown
 
-## 📋 Prerequisites
+| Day | Topic | Files | Key Concepts |
+|-----|-------|-------|--------------|
+| **Day 1** | Foundations & Document Processing | `config/`, `core/document_processor.py` | RAG intro, document loaders, text splitting |
+| **Day 2** | Vector Store & Embeddings | `core/embeddings.py`, `core/vector_store.py` | Embeddings, FAISS, similarity search |
+| **Day 3** | RAG Chain & Tavily Tool | `core/chain.py`, `tools/tavily_search.py` | LLM integration, chains, web search |
+| **Day 4** | Streamlit UI & Integration | `ui/`, `app.py` | Chat interface, streaming, deployment |
 
-- **Python**: 3.10 or higher
-- **Operating System**: Windows, macOS, or Linux
-- **Internet Connection**: Required for downloading models and dependencies
+## 🛠️ Tech Stack
 
----
+- **LLM**: Groq (FREE - Llama 3.1)
+- **Embeddings**: HuggingFace sentence-transformers (FREE - runs locally)
+- **Vector Store**: FAISS (FREE - runs locally)
+- **Web Search**: Tavily API
+- **UI**: Streamlit
+- **Framework**: LangChain
 
-## 🚀 Setup Instructions
+## 📁 Project Structure
 
-### Option 1: Setup with UV (Recommended - Fast!)
+```
+rag-chatbot/
+├── config/
+│   ├── __init__.py
+│   └── settings.py           # Configuration & API keys
+├── core/
+│   ├── __init__.py
+│   ├── document_processor.py # Document loading & splitting
+│   ├── embeddings.py         # HuggingFace embeddings
+│   ├── vector_store.py       # FAISS operations
+│   └── chain.py              # RAG chain orchestration
+├── tools/
+│   ├── __init__.py
+│   └── tavily_search.py      # Web search integration
+├── ui/
+│   ├── __init__.py
+│   ├── components.py         # Reusable UI components
+│   └── chat_interface.py     # Chat logic
+├── data/
+│   ├── documents/            # Uploaded documents
+│   └── faiss_index/          # Persisted vector index
+├── app.py                    # Main Streamlit app
+├── requirements.txt
+└── README.md
+```
 
-UV is a modern, fast Python package manager written in Rust. It's significantly faster than pip.
+## 🚀 Quick Start
 
-#### Windows Setup with UV
+### 1. Clone and Setup
 
-1. **Install UV**
-   ```powershell
-   # Using PowerShell
-   powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
-   ```
+```bash
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-2. **Clone the Repository**
-   ```powershell
-   git clone <repository-url>
-   cd alma-GenAI-Project-AI-Advocate
-   ```
+# Install dependencies
+pip install -r requirements.txt
+```
 
-3. **Create Virtual Environment and Install Dependencies**
-   ```powershell
-   # Create virtual environment
-   uv venv
-   
-   # Activate virtual environment
-   .venv\Scripts\activate
-   
-   # Install dependencies
-   uv pip install -r requirements.txt
-   ```
+### 2. Get API Keys (FREE!)
 
-4. **Set Up Environment Variables**
-   ```powershell
-   # Create .env file
-   copy .env.example .env
-   # Edit .env and add your API keys
-   notepad .env
-   ```
+1. **Groq API Key** (FREE): https://console.groq.com/
+2. **Tavily API Key** (FREE tier): https://tavily.com/
 
-#### macOS/Linux Setup with UV
+### 3. Configure Environment
 
-1. **Install UV**
-   ```bash
-   # Using curl
-   curl -LsSf https://astral.sh/uv/install.sh | sh
-   
-   # Or using Homebrew (macOS)
-   brew install uv
-   ```
+```bash
+# Copy example env file
+cp .env.example .env
 
-2. **Clone the Repository**
-   ```bash
-   git clone <repository-url>
-   cd alma-GenAI-Project-AI-Advocate
-   ```
-
-3. **Create Virtual Environment and Install Dependencies**
-   ```bash
-   # Create virtual environment
-   uv venv
-   
-   # Activate virtual environment
-   source .venv/bin/activate
-   
-   # Install dependencies
-   uv pip install -r requirements.txt
-   ```
-
-4. **Set Up Environment Variables**
-   ```bash
-   # Create .env file
-   cp .env.example .env
-   # Edit .env and add your API keys
-   nano .env
-   ```
-
----
-
-### Option 2: Setup with Standard Python
-
-#### Windows Setup with Python
-
-1. **Install Python**
-   - Download Python 3.10+ from [python.org](https://www.python.org/downloads/)
-   - During installation, check "Add Python to PATH"
-   - Verify installation:
-     ```powershell
-     python --version
-     pip --version
-     ```
-
-2. **Clone the Repository**
-   ```powershell
-   git clone <repository-url>
-   cd alma-GenAI-Project-AI-Advocate
-   ```
-
-3. **Create Virtual Environment**
-   ```powershell
-   # Create virtual environment
-   python -m venv venv
-   
-   # Activate virtual environment
-   .\venv\Scripts\activate
-   ```
-
-4. **Install Dependencies**
-   ```powershell
-   # Upgrade pip
-   python -m pip install --upgrade pip
-   
-   # Install requirements
-   pip install -r requirements.txt
-   ```
-
-5. **Set Up Environment Variables**
-   ```powershell
-   # Create .env file
-   copy .env.example .env
-   # Edit .env and add your API keys
-   notepad .env
-   ```
-
-#### macOS/Linux Setup with Python
-
-1. **Install Python**
-   ```bash
-   # macOS (using Homebrew)
-   brew install python@3.10
-   
-   # Ubuntu/Debian
-   sudo apt update
-   sudo apt install python3.10 python3.10-venv python3-pip
-   
-   # Verify installation
-   python3 --version
-   pip3 --version
-   ```
-
-2. **Clone the Repository**
-   ```bash
-   git clone <repository-url>
-   cd alma-GenAI-Project-AI-Advocate
-   ```
-
-3. **Create Virtual Environment**
-   ```bash
-   # Create virtual environment
-   python3 -m venv venv
-   
-   # Activate virtual environment
-   source venv/bin/activate
-   ```
-
-4. **Install Dependencies**
-   ```bash
-   # Upgrade pip
-   pip install --upgrade pip
-   
-   # Install requirements
-   pip install -r requirements.txt
-   ```
-
-5. **Set Up Environment Variables**
-   ```bash
-   # Create .env file
-   cp .env.example .env
-   # Edit .env and add your API keys
-   nano .env
-   ```
-
----
-
-## 🔑 Environment Variables
-
-Create a `.env` file in the project root with the following:
-
-```env
-# Required API Keys
+# Edit .env with your API keys
 GROQ_API_KEY=your_groq_api_key_here
 TAVILY_API_KEY=your_tavily_api_key_here
-
-# Optional Configuration
-EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
-CHUNK_SIZE=500
-CHUNK_OVERLAP=50
 ```
 
-### Getting API Keys
+### 4. Run the App
 
-- **GROQ API Key**: Sign up at [https://console.groq.com](https://console.groq.com)
-- **Tavily API Key**: Sign up at [https://tavily.com](https://tavily.com)
-
----
-
-## 🧪 Testing the APIs - Demo Scripts
-
-The project includes two demo scripts to test different components:
-
-### Demo Day 1: Document Processing
-
-Tests document loading and chunking functionality.
-
-**Windows:**
-```powershell
-python demo_day1.py
-```
-
-**macOS/Linux:**
 ```bash
-python demo_day1.py
+streamlit run app.py
 ```
 
-**Expected Output:**
-- Creates a sample document
-- Loads and processes the document
-- Splits content into chunks
-- Displays chunk details (content, metadata, token count)
+## 📖 SOLID Principles Applied
 
----
+This project follows SOLID principles for maintainable code:
 
-### Demo Day 2: Embeddings & Vector Store
+- **S**ingle Responsibility: Each module has one job
+- **O**pen/Closed: Extensible without modifying existing code
+- **L**iskov Substitution: Components can be swapped
+- **I**nterface Segregation: Small, focused interfaces
+- **D**ependency Inversion: Depend on abstractions
 
-Tests embeddings creation and vector store operations.
+## 🎓 Teaching Notes
 
-**Windows:**
-```powershell
-python demo_day2.py
-```
+### Day 1: Foundations
+- Explain RAG architecture (Retrieve → Augment → Generate)
+- Walk through `config/settings.py` - environment variables
+- Deep dive into `core/document_processor.py` - loaders & splitters
+- **Hands-on**: Load and split a sample document
 
-**macOS/Linux:**
-```bash
-python demo_day2.py
-```
+### Day 2: Vector Store
+- Explain embeddings (text → vectors)
+- Show `core/embeddings.py` - HuggingFace models
+- Explain FAISS and similarity search
+- Walk through `core/vector_store.py`
+- **Hands-on**: Create embeddings and search
 
-**Expected Output:**
-- Creates sample documents
-- Generates embeddings using HuggingFace models
-- Builds FAISS vector store
-- Performs similarity search
-- Displays search results with scores
+### Day 3: RAG Chain
+- Explain LLM integration with Groq
+- Walk through `core/chain.py` - prompt templates, chains
+- Show `tools/tavily_search.py` - web search
+- **Hands-on**: Build complete RAG pipeline
 
-**Note**: The first run will download the embedding model (~80MB), which may take a minute.
+### Day 4: UI & Integration
+- Explain Streamlit components
+- Walk through `ui/components.py` and `ui/chat_interface.py`
+- Show `app.py` - putting it all together
+- **Hands-on**: Run the complete application
 
----
+## 📝 License
 
-### Demo Day 3: Complete RAG Pipeline (If Available)
-
-**Windows:**
-```powershell
-python demo_day3.py
-```
-
-**macOS/Linux:**
-```bash
-python demo_day3.py
-```
-
----
-
-## 🏃‍♂️ Running the Main Application
-
-**Windows:**
-```powershell
-python main.py
-```
-
-**macOS/Linux:**
-```bash
-python main.py
-```
-
----
-
-## 📦 Project Structure
-
-```
-alma-GenAI-Project-AI-Advocate/
-├── config/              # Configuration settings
-│   ├── __init__.py
-│   └── settings.py
-├── core/                # Core functionality
-│   ├── __init__.py
-│   ├── document_processor.py  # Document loading & chunking
-│   ├── embeddings.py          # Embedding generation
-│   └── vector_store.py        # Vector store operations
-├── data/                # Data storage
-│   └── faiss_index/     # FAISS vector indices
-├── utils/               # Utility functions
-├── demo_day1.py         # Document processing demo
-├── demo_day2.py         # Embeddings & vector store demo
-├── main.py              # Main application entry point
-├── requirements.txt     # Python dependencies
-├── pyproject.toml       # Project metadata
-└── README.md            # This file
-```
-
----
-
-## 🔍 Troubleshooting
-
-### Common Issues
-
-**Issue**: `ModuleNotFoundError` for packages
-- **Solution**: Ensure virtual environment is activated and dependencies are installed
-  ```bash
-  pip install -r requirements.txt
-  ```
-
-**Issue**: FAISS import error on Windows
-- **Solution**: Install Visual C++ redistributables or use `faiss-cpu` instead
-
-**Issue**: Slow embedding generation
-- **Solution**: First run downloads models; subsequent runs will be faster
-
-**Issue**: API key errors
-- **Solution**: Verify `.env` file exists with correct API keys
-
----
-
-## 📚 Key Dependencies
-
-- **LangChain**: Framework for LLM applications
-- **GROQ**: Fast LLM inference API (Free tier available)
-- **HuggingFace Sentence Transformers**: Free embedding models
-- **FAISS**: Efficient similarity search and vector storage
-- **Tavily**: Web search API for RAG
-- **Streamlit**: Web UI framework
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit issues and pull requests.
-
----
-
-## 📄 License
-
-This project is part of the Alma GenAI program.
-
----
-
-## 🆘 Support
-
-For issues and questions:
-1. Check the troubleshooting section above
-2. Review demo script outputs for errors
-3. Verify all dependencies are installed correctly
-4. Ensure API keys are properly configured
-
----
-
-**Happy Coding! 🚀**
+MIT License - Feel free to use for teaching and learning!

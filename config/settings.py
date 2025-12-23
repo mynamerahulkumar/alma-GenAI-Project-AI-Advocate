@@ -38,7 +38,7 @@ class Settings:
     
     # LLM Configuration
     LLM_MODEL: str = "llama-3.1-8b-instant"  # Free Groq model
-    LLM_TEMPERATURE: float = 0.7
+    LLM_TEMPERATURE: float = os.getenv("LLM_TEMPERATURE")
     
     # Embedding Configuration  
     EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"  # Free HuggingFace model

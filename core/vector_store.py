@@ -80,9 +80,11 @@ class VectorStoreManager:
         """
         if not self.is_initialized:
             # If not initialized, create new store
+            print("---create-from_documents--")
             self.create_from_documents(documents)
         else:
             # Add to existing store
+            print("---vectorstore-from_documents--")
             self._vector_store.add_documents(documents)
     
     def search(

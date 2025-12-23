@@ -120,7 +120,8 @@ class ChatInterface:
             doc_results = []
             if self.vector_store.is_initialized:
                 doc_results = self.vector_store.search(query)
-            
+                
+
             # Format context
             context_parts = []
             
@@ -129,13 +130,15 @@ class ChatInterface:
                 for i, doc in enumerate(doc_results, 1):
                     source = doc.metadata.get("source", "Unknown")
                     context_parts.append(f"[Doc {i}] ({source}):\n{doc.page_content}")
+                    print(f"vectore-store_result:{doc.page_content}")
             
             if web_results:
                 context_parts.append("\n=== From Web Search ===")
                 context_parts.append(web_results)
             
             context = "\n\n".join(context_parts) if context_parts else "No context available."
-            
+            print("llm--context",context)
+            print("doc_results--context",doc_results)
             # Generate response with context
             from langchain_groq import ChatGroq
             from langchain_core.prompts import ChatPromptTemplate

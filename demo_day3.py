@@ -18,7 +18,7 @@ from tools.tavily_search import TavilySearchTool
 
 def main():
     print("\n" + "=" * 70)
-    print("🎓  DEMO: RAG Chain & Web Search")
+    print("🎓 DAY 3 DEMO: RAG Chain & Web Search")
     print("=" * 70)
     
     # Step 1: Create sample knowledge base
@@ -57,7 +57,7 @@ def main():
     
     # Step 3: Create RAG chain
     print("\n⚙️  Step 3: Initializing RAG chain...")
-    rag = RAGChain(vs_manager,'llama-3.3-70b-versatile',0)
+    rag = RAGChain(vs_manager)
     print(f"✅ RAG chain ready")
     print(f"   LLM Model: {rag.model_name}")
     print(f"   Temperature: {rag.temperature}")

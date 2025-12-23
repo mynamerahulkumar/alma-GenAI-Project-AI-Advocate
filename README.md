@@ -127,3 +127,6 @@ This project follows SOLID principles for maintainable code:
 ## 📝 License
 
 MIT License - Feel free to use for teaching and learning!
+
+# Sample question
+ Personal Liberty: Procedure Established by Law

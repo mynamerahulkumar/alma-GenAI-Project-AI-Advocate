@@ -104,7 +104,7 @@ def main():
                 )
                 
                 # Get sources
-                sources = chat.get_sources(prompt)
+                sources = chat.get_sources(prompt, use_web_search=use_web_search)
                 
                 # Show sources if available
                 if sources:

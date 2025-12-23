@@ -163,19 +163,28 @@ class ChatInterface:
             for chunk in self.rag_chain.query_stream(query):
                 yield chunk
     
-    def get_sources(self, query: str) -> list:
+    def get_sources(self, query: str, use_web_search: bool = False) -> list:
         """
         Get source documents for a query.
         
         Args:
             query: User's question
+            use_web_search: Whether web search was used
             
         Returns:
             List of source document names
         """
-        if not self.vector_store.is_initialized:
-            return []
+        sources = []
         
-        docs = self.vector_store.search(query)
-        sources = list(set(doc.metadata.get("source", "Unknown") for doc in docs))
+        # Get semantic search sources
+        if self.vector_store.is_initialized:
+            docs = self.vector_store.search(query)
+            sources.extend(list(set(doc.metadata.get("source", "Unknown") for doc in docs)))
+        
+        # Get web search sources
+        if use_web_search:
+            web_results = self.tavily_search.search(query)
+            if web_results:
+                sources.append("Web Search Results")
+        
         return sources

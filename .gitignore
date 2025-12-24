@@ -114,6 +114,7 @@ logs/
 
 # Local configuration
 *.local
+.env
 .env.local
 .env.*.local
 
@@ -121,3 +122,4 @@ logs/
 *.key
 *.pem
 secrets.json
+.streamlit/secrets.toml

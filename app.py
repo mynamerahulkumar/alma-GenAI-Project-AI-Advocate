@@ -10,6 +10,16 @@ Run with: streamlit run app.py
 
 import streamlit as st
 
+# Import configuration and validate settings
+from config.settings import settings
+
+# Validate API keys before anything else
+try:
+    settings.validate()
+except ValueError as e:
+    st.error(f"⚠️ Configuration Error:\n\n{str(e)}")
+    st.stop()
+
 # Import UI components
 from ui.components import (
     init_session_state,
